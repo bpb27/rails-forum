@@ -1,0 +1,91 @@
+<script>
+  	$(document).ready(function(){
+    	$('.post-form').submit(function(){
+      		$.post(
+        		$(this).attr('action'),
+        		$(this).serialize(),
+        		function(data){
+          			console.log(data);
+          			$('#post-box').val('');
+          			$('.all-posts').prepend('<div class="post-holder"><div class="arrows"><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-arrow-up"></span></button><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-arrow-down"></span></button></div> <div class="post-container"> <h4><u><%= current_user.first_name %> - <%= Time.new.strftime("%b %d,  %Y") %></u></h4> <p>' + data.message['content'] + '</p> <div class="comment-container"> <form class="comment-form" action="/wall/comment" method="post"> <%= tag(:input,:type =>"hidden",:name => request_forgery_protection_token.to_s,:value => form_authenticity_token)%> <textarea class="comment-box" name="comment[content]"></textarea> <input type="hidden" name="comment[post_id]" value="' + data.post_id + '"> <input type="hidden" name="comment[user_id]" value="<%= current_user.id %>"> <input class="comment-message-btn" type="submit" value="Leave a comment"> </form></div></div>'
+          			);//END PREPEND
+        		},
+        		"json"
+      		);
+      		return false;
+    	});
+
+		$(document).on('submit', '.comment-form', function(){
+		// $('.comment-form').submit(function(){
+      		var my_form = $(this);
+      		$.post(
+        		$(this).attr('action'),
+        		$(this).serialize(),
+        		function(data){
+          			$('.comment-box').val('');
+          			$('<p class="comment"><b><u><%= current_user.first_name %></u></b>: ' + data.message['content'] + '</div>').insertBefore(my_form);
+        		},
+        		"json"
+      		);
+      		return false;
+    		});
+  		});
+</script>
+
+<div id="wall-head-main">
+	<h3>The Wall</h3>
+	<p>What's up, <%= current_user.first_name %>?</p>
+	<a href="/users/sign_out" data-method="delete">Log Off</a>
+</div>
+<div class="container">
+	<div class="col-md-10">
+		<h3>Post a message:</h3>
+		<form class="post-form" action="/wall/post" method="post">
+			<%= tag(:input,:type =>"hidden",:name => request_forgery_protection_token.to_s,:value => form_authenticity_token)%>
+			<textarea id="post-box" name="post[content]"></textarea>
+			<br>
+			<input type="hidden" name="post[user_id]" value="<%= current_user.id %>">
+			<input id="post-message-btn" type="submit" value="Post a message">
+		</form>
+	</div>
+</div>
+
+<div class="container">
+	<div class="col-md-10 all-posts">
+		<% @posts.each do |post| %>
+			<div class="post-holder">
+			
+				<div class="arrows">
+					<button type="button" class="btn btn-default btn-sm">
+		  				<span class="glyphicon glyphicon-arrow-up"></span>
+					</button>
+					<button type="button" class="btn btn-default btn-sm">
+		  				<span class="glyphicon glyphicon-arrow-down"></span>
+					</button>
+				</div>
+				
+				<div class="post-container">
+					<h4><u><%= post.user.first_name %> - <%= post.created_at.strftime("%b %d,  %Y") %></u></h4>
+					<p><%= post.content %></p>
+
+					<div class="comment-container">
+
+						<% post.comments.each do |comment| %>
+							<p class="comment"><b><u><%= comment.user.first_name %></u></b>: <%= comment.content %></p>
+						<% end %>
+
+						<form class="comment-form" action="/wall/comment" method="post">
+							<%= tag(:input,:type =>"hidden",:name => request_forgery_protection_token.to_s,:value => form_authenticity_token)%>
+							<textarea class="comment-box" name="comment[content]"></textarea>
+							<input type="hidden" name="comment[post_id]" value="<%= post.id %>">
+							<input type="hidden" name="comment[user_id]" value="<%= current_user.id %>">
+							<input class="comment-message-btn" type="submit" value="Leave a comment">
+						</form>
+
+					</div>
+				</div>
+			
+			</div>
+		<% end %>
+	</div>
+</div>

@@ -1,0 +1,107 @@
+// Place all the styles related to the Wall controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import 'bootstrap';
+
+#wall-head{
+	margin-left: 30px;
+	border-bottom: 10px solid black;
+	font-size: 40px;
+}
+
+body{
+	padding: 20px;
+}
+
+input[type=submit]{
+	margin-top: 10px;
+	background-color: #EB6949;
+	border: none;
+	border-radius: 3px;
+	color: white;
+	width: 150px;
+	padding: 5px;
+}
+
+label{
+	margin-top: 5px;
+}
+
+#wall-head-main{
+	border-bottom: 5px solid black;
+	height: 60px;
+}
+
+#wall-head-main h3{
+	display: inline-block;
+	float: left;
+}
+
+#wall-head-main p{
+	display: inline-block;
+	margin: 25px;
+}
+
+#wall-head-main a{
+	display: inline-block;
+	float: right;
+	margin: 25px;
+}
+
+#post-message-btn{
+	background-color: blue;
+	float: right;
+}
+
+#post-box{
+	width: 100%;
+	margin-top: 10px;
+}
+
+.post-container{
+/*	border: 1px dotted gray;*/
+	margin-top: 15px;
+	min-height: 200px;
+	display: inline-block;
+	vertical-align: top;
+	max-width: 705px;
+}
+
+.comment-box{
+	width: 550px;
+	height: 30px;
+	text-align: left;
+	margin-top: 10px;
+	margin-left: 100px;
+}
+
+.comment-message-btn{
+	margin-top: 0px;
+	vertical-align: top;
+}
+
+.comment{
+	text-align: left;
+	margin-left: 100px;
+}
+
+.comment-container{
+	text-align: right;
+}
+
+.arrows{
+	display: inline-block;
+	vertical-align: top;
+	height: 60px;
+	width: 34px;
+	margin-top: 25px;
+	margin-right: 8px;
+}
+
+.post-holder{
+	min-width: 753px;
+}
+
+.glyphicon-arrow-up{
+	color: #EB6949;;
+}
